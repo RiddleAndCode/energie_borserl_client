@@ -4,7 +4,7 @@ The *energieclient* package provides an easy to use interface to send consumptio
 
 There is only one function to be used which takes the port, ip and consumption data in simple string format as input.
 
-``SendConsumptionandGetIPDBTX("145.232 kWh",192.168.0.1,5555)``
+``SendConsumptionandGetIPDBTX("145.232 kWh","192.168.0.1","5555")``
 
 ### Installation
 
