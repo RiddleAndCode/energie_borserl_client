@@ -12,7 +12,12 @@ Make sure your go environment is set and type the following on your terminal
 
 ``go get -u github.com/RiddleAndCode/energieclient`` 
 
-### Usage Example
+### Usage 
+
+There are 3 options to send data and get the IPDB transaction JSON in return.
+
+#### Option 1: CLI
+
 
 There is CLI that demonstrates the usage of the *energieclient* package. It prompts for the ip address and the port of the logging device. There after, the user can tip in any consumption data which will be forwarded to the logging device.
 
@@ -24,7 +29,7 @@ and run
 
 ``go run energieborserlcli.go``
 
-### Example JSON sent from Client
+#### Option 2: Send a command from terminal
 
 A JSON of the following type is expected by the server.
 
@@ -32,13 +37,19 @@ A JSON of the following type is expected by the server.
     "consumption": "2452.2323 KWH"
 }`
 
-The following command can be sent as well to directly communicate with the Logger device.
+The following command can be sent to directly communicate with the Logger device.
 
 `  curl -X POST -H "Content-Type: application/json" -d @data.json http://<IP OF THE SIGNER DEVICE>:5555/transaction `
 
 Dont forget to put the JSON to a file named `data.json`. 
 
-**Note**: This is not necessary at all. The  `SendConsumptionandGetIPDBTX` function abstracts away everything. This is just another option to get responses if one doesnt want to use the go `energieclient` package.
+#### Option 3: Using `SendConsumptionandGetIPDBTX` function from your own implementation
+
+The ``SendConsumptionandGetIPDBTX(consumption string ,ip string, port string)`` function from ``energieclient`` package
+can be called from another implementation. A simple example:
+
+``response := energieclient.SendConsumptionandGetIPDBTX("145.232 kWh","192.168.0.1","5555")`` 
+
 
 ### Example Response
 
