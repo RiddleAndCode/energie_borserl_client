@@ -24,6 +24,22 @@ and run
 
 ``go run energieborserlcli.go``
 
+### Example JSON sent from Client
+
+A JSON of the following type is expected by the server.
+
+`{
+    "consumption": "2452.2323 KWH"
+}`
+
+The following command can be sent as well to directly communicate with the Logger device.
+
+`  curl -X POST -H "Content-Type: application/json" -d @data.json http://<IP OF THE SIGNER DEVICE>:5555/transaction `
+
+Dont forget to put the JSON to a file named `data.json`. 
+
+**Note**: This is not necessary at all. The  `SendConsumptionandGetIPDBTX` function abstracts away everything. This is just another option to get responses if one doesnt want to use the go `energieclient` package.
+
 ### Example Response
 
 ```
