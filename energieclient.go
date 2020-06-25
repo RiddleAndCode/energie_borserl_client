@@ -7,12 +7,12 @@ import (
 )
 
 
-func SendConsumptionandGetIPDBTX(consumption string, ipAddress string, port string){
+func SendConsumptionandGetIPDBTX(consumption string, epoch string, ipAddress string, port string) {
 	url := "http://" + ipAddress + ":" + port + "/transaction"
-	var temp_str = `{"consumption":` +`"`+ consumption + `"`+"}"
-	var jsonStr = []byte(temp_str)
-	fmt.Println(temp_str)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	var jsonStr = `{"consumption":` + `"` + consumption + `"` + "," + " " + `"epoch":` + `"` + epoch + `"` + "}"
+	var jsonByteArray = []byte(jsonStr)
+	fmt.Println(jsonStr)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonByteArray))
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -25,5 +25,5 @@ func SendConsumptionandGetIPDBTX(consumption string, ipAddress string, port stri
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println("response Body:", string(body))
 
-
 }
+
