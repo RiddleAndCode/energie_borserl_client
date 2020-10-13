@@ -1,54 +1,72 @@
 # Wien Energie - Energiebörserl client software
 
-The *energieclient* package provides an easy to use interface to send consumption data to the logging device which in turn will sign it and build the BigChainDb transaction and finally send the transaction Json as a string back to the client. 
+The *energieclient* package provides an easy to use interface to send consumption data to the logging device with ``SendConsumptionandGetIPDBTX`` function which will sign the payload with ECDSA, build the BigChainDb transaction and finally send the transaction Json as a string back to the client.
 
-There is only one function to be used which takes the port, ip and consumption data in simple string format as input.
+Logger device status can be querried via a simple ``CheckServerHealth`` function that also takes port number and IP as arguments and responds with the status of the server.
 
-``SendConsumptionandGetIPDBTX("145.232 kWh","192.168.0.1","5555")``
+``SendConsumptionandGetIPDBTX("145.232 kWh","192.168.20.77","5555")``
+
+``CheckServerHealth("192.168.20.77","5555")``
+
 
 ### Installation
 
 Make sure your go environment is set and type the following on your terminal
 
-``go get -u github.com/RiddleAndCode/energieclient`` 
+``go get -u github.com/RiddleAndCode/energieclient``
 
-### Usage 
+### Usage
 
 There are 3 options to send data and get the IPDB transaction JSON in return.
 
 #### Option 1: CLI
 
 
-There is CLI that demonstrates the usage of the *energieclient* package. It prompts for the ip address and the port of the logging device. There after, the user can tip in any consumption data which will be forwarded to the logging device.
+There is CLI that demonstrates the usage of the *energieclient* package. Ip address and the port of the logging device is a global variable inside go source code. User can tip in any consumption data which will be forwarded to the logging device. Epoch time is taken automatically from the system time and added to the request.
 
-To run the example simply navigate to cli folder 
+##### Installation
+
+``go get -u github.com/olekukonko/tablewriter``
+
+##### Usage
+
+To run the example simply navigate to cli folder
 
 `cd $GOPATH/src/github.com/RiddleAndCode/energieclient/cli`
 
-and run
+and run with the following arguments
 
-``go run energieborserlcli.go``
+``go run energieborserlcli.go -ip=192.168.xx.xx -port=xxx``
+
+Default values for the IP and Port are as follows :
+
+```
+ip = 192.168.20.77
+port = 5555
+
+```
 
 #### Option 2: Send a command from terminal
 
 A JSON of the following type is expected by the server.
 
 `{
-    "consumption": "2452.2323 KWH"
+    "consumption": "2452.2323 KWH",
+    "epoch": "1593121481"
 }`
 
 The following command can be sent to directly communicate with the Logger device.
 
-`  curl -X POST -H "Content-Type: application/json" -d @data.json http://<IP OF THE SIGNER DEVICE>:5555/transaction `
+`  curl -X POST -H "Content-Type: application/json" -d @data.json http://192.168.20.77:5555/transaction `
 
-Dont forget to put the JSON to a file named `data.json`. 
+Dont forget to put the JSON to a file named `data.json`.
 
 #### Option 3: Using `SendConsumptionandGetIPDBTX` function from your own implementation
 
-The ``SendConsumptionandGetIPDBTX(consumption string ,ip string, port string)`` function from ``energieclient`` package
+The ``SendConsumptionandGetIPDBTX(consumption string, epoch ,ip string, port string)`` function from ``energieclient`` package
 can be called from another implementation. A simple example:
 
-``response := energieclient.SendConsumptionandGetIPDBTX("145.232 kWh","192.168.0.1","5555")`` 
+``response := energieclient.SendConsumptionandGetIPDBTX("145.232 kWh","1593121481","192.168.20.77","5555")``
 
 
 ### Example Response
