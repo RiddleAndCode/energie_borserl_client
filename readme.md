@@ -113,3 +113,18 @@ can be called from another implementation. A simple example:
    "version":"2.0"
 }
 ```
+
+**Response Structure**
+
+There are two fields in the transaction that hold the public keys:
+
+ 1. **base58 SECP256K1 pubkey**: 
+ 
+ Inside the Secure Element, there is a SECP256K1 key which servers as the device identity. All the data such as comsumption and epoch is signed with this key. The  public counter part of this key is shown under this field in the transaction. It is base58 encoded and it also adheres to ASN.1 Structure with Der Encoding. This means, to have the actual bytes of the public key:
+  * one has to first base58 decode this field : [online decoder](https://www.dcode.fr/base-58-cipher)
+  * and then use a ASN.1 parser [ASN.1 parser](https://lapo.it/asn1js/)
+
+
+  2. **public_key** :
+  
+  This public key is related to the IPDB network and represents the account name on the ledger. It is base58 encoded as well but is in **raw byte format** and **doesnt** require ASN.1 decoding.
