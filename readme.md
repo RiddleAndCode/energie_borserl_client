@@ -70,7 +70,7 @@ can be called from another implementation. A simple example:
 
 
 ### Example Response
-
+#### Transaction Building
 ```
 {
    "asset":{
@@ -113,7 +113,17 @@ can be called from another implementation. A simple example:
    "version":"2.0"
 }
 ```
+#### Health Checks
+If everything is as expected on thhe server side you will get a message like below :
+```
+Signer Device is Healthy.
 
+```
+In case of an error, PKCS error from the lower layers is propogated back to the client.
+```
+pkcs11: 0x6: CKR_FUNCTION_FAILED
+
+```
 **Response Structure**
 
 There are two fields in the transaction that hold the public keys:
